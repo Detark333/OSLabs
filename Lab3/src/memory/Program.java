@@ -1,4 +1,3 @@
-package memory;
 import java.util.ArrayList;
 import java.util.Random;
 import static info.SystemInfo.*;
