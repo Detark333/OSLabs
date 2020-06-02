@@ -4,24 +4,21 @@ import static info.SystemInfo.*;
 import info.Actions;
 import memory.MMU;
 import memory.RAM;
-import memory.ROM;
 import memory.TableRecord;
 public class Program {
 	private RAM ram;
-	private ROM rom;
 	private MMU mmu;
 	private int timer;
 
 	public Program() {
 		timer = 5;
 		ram = new RAM();
-		rom = new ROM();
 		mmu = new MMU();
 		mmu.linkToRAM(ram);
 	}
 
 	public void load() {
-		ram.loadData(rom.getData());
+		ram.loadData(ram.getData());
 	}
 
 	public void perform() {
@@ -58,7 +55,7 @@ public class Program {
 		TableRecord[] table = ram.getPageTable();
 		Integer frame = ram.getFreeFrame();
 		if (frame != null) {
-			rom.getPage(virtualPage);
+			ram.getPage(virtualPage);
 			ram.loadPage(frame);
 			table[virtualPage].setFrame(frame);
 			return;
@@ -106,7 +103,7 @@ public class Program {
 		int index = rnd.nextInt(pageClass.size());
 		int page = pageClass.get(index).intValue();
 		ram.removePage(page);
-		rom.getPage(virtualPage);
+		ram.getPage(virtualPage);
 		ram.loadPage(page);
 		for (TableRecord rec : table) {
 			if (rec.getFrame() == page) {
